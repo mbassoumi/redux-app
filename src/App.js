@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import {createStore} from 'redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import {todosReducer} from "./pages/todo/reducers/todosReducer";
+import Todo from "./pages/todo/components/Todo";
+import ReactDOM from "react-dom";
+
+const store = createStore(todosReducer);
+
+let id = 1;
+const App = () => {
+    console.log('store.getState()', store.getState());
+    const [input, setInput] = useState('');
+
+    return (
+        <div>
+            <input type='text' onChange={e => setInput(e.target.value)}/>
+            <button onClick={() => {
+                store.dispatch({type: 'ADD_TODO', id: id, text: input, completed: false})
+                id++;
+            }}> ADD TODO
+            </button>
+            <ul>
+                {store.getState().map((todo, index) => (
+                    <li key={index}>
+                        <Todo todo={todo} onToggle={store.dispatch.bind(this, {type: 'TOGGLE_TODO', id: todo.id})}/>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+const render = () => ReactDOM.render(<App/>, document.getElementById('root'));
+store.subscribe(render);
+render();
+
 
 export default App;
