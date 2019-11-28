@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {memo} from 'react';
 import PropTypes from 'prop-types'
+import {useDispatch} from "react-redux";
+import * as actions from './../actions/actions';
 
-const Counter = ({value, onIncrement, onDecrement}) => {
+const Counter = ({value, id}) => {
 
-    console.log('value', value);
+    const dispatch = useDispatch();
+
     return (
-        <div>
+        <div style={{border: '1px solid black', margin: '10px'}}>
             <div>
-                <button onClick={onIncrement}>Increment</button>
-                <button onClick={onDecrement}>Decrement</button>
+                <button onClick={dispatch.bind(this, {type: actions.INCREMENT_COUNTER, id: id})}>Increment</button>
+                <button onClick={dispatch.bind(this, {type: actions.DECREMENT_COUNTER, id: id})}>Decrement</button>
+                <button onClick={dispatch.bind(this, {type: actions.REMOVE_COUNTER, id: id})}>Remove</button>
             </div>
             <h1>{value}</h1>
         </div>
@@ -17,8 +21,7 @@ const Counter = ({value, onIncrement, onDecrement}) => {
 
 
 Counter.propTypes = {
-    onDecrement: PropTypes.func.isRequired,
-    onIncrement: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired
 };
+export const MemorizedCounter = memo(Counter);
 export default Counter;

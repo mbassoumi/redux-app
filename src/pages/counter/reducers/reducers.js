@@ -1,22 +1,41 @@
 import * as actions from './../actions/actions';
 
 
-const initialState = 0;
+const initialState = [];
 
 export const reducer = (state = initialState, action) => {
-    let newState;
     switch (action.type) {
-        case actions.INCREMENT_COUNTER.type:
-            newState = state + 1;
-            break;
-        case actions.DECREMENT_COUNTER.type:
-            newState = state - 1;
-            break;
-        case actions.ADD_COUNTER.type:
-        case actions.REMOVE_COUNTER.type:
+        case actions.INCREMENT_COUNTER:
+            return state.map(counter => {
+                if (counter.id === action.id) {
+                    return {
+                        ...counter,
+                        value: counter.value + 1
+                    };
+                }
+                return counter;
+            });
+        case actions.DECREMENT_COUNTER:
+            return state.map(counter => {
+                if (counter.id === action.id) {
+                    return {
+                        ...counter,
+                        value: counter.value - 1
+                    };
+                }
+                return counter;
+            });
+        case actions.ADD_COUNTER:
+            return [
+                ...state,
+                {
+                    id: action.id,
+                    value: 0,
+                }
+            ];
+        case actions.REMOVE_COUNTER:
+            return state.filter(counter => counter.id !== action.id);
         default:
-            newState = state;
-            break;
+            return state;
     }
-    return newState;
 };

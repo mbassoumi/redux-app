@@ -1,6 +1,33 @@
 import * as todoActions from './../actions/todosActions';
 
-const initialState = [];
+const initialState = [
+    {
+        id: 1,
+        text: 'TODO 1',
+        completed: false,
+    },
+    {
+        id: 2,
+        text: 'TODO 2',
+        completed: true,
+    },
+    {
+        id: 3,
+        text: 'TODO 3',
+        completed: false,
+    },
+    {
+        id: 4,
+        text: 'TODO 4',
+        completed: true,
+    },
+    {
+        id: 5,
+        text: 'TODO 5',
+        completed: false,
+    },
+
+];
 
 const todo = (state, action) => {
     switch (action.type) {
